@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=}, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Export table to CSV with JavaScript</h1>
+    <table id="dataTable" class="table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Points</th>
+                <th>Team</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Steven Soto</td>
+                <td>2,462</td>
+                <td>Blue</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Alfred, Hines</td>
+                <td>1,930</td>
+                <td>Blue</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Jeff, "The Champion" Foster</td>
+                <td>1,656</td>
+                <td>Red</td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="btnExportToCsv" type="button" class="button">Export to CSV</button>
+    <script src="TableCSVExporter.js"></script>
+    <script>
+        const dataTable = document.getElementById("dataTable");
+        const btnExportToCsv = document.getElementById("btnExportToCsv");
+
+        btnExportToCsv.addEventListener("click", () => {
+            const exporter = new TableCSVExporter(dataTable);
+            const csvOutput = exporter.convertToCSV();
+            const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+            const blobUrl = URL.createObjectURL(csvBlob);
+            const anchorElement = document.createElement("a");
+
+            anchorElement.href = blobUrl;
+            anchorElement.download = "table-export.csv";
+            anchorElement.click();
+
+            setTimeout(() => {
+                URL.revokeObjectURL(blobUrl);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
